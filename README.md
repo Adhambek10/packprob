@@ -2,6 +2,15 @@
 
 Calculate the probability of *actually* getting the player(s) you want from an eFootball pack draw! Yeah, it'll be less than you think...
 
+### Table of Contents
+
+- [packprob: eFootball Pack Probability Calculator](#packprob-efootball-pack-probability-calculator)
+    - [Table of Contents](#table-of-contents)
+  - [Example 1: An intuitive case](#example-1-an-intuitive-case)
+  - [Example 2: Normal use case](#example-2-normal-use-case)
+  - [Example 3: Using packprob to analyze your luck](#example-3-using-packprob-to-analyze-your-luck)
+  - [How it works (AKA The Math)](#how-it-works-aka-the-math)
+
 ## Example 1: An intuitive case
 
 **Scenario**: "It's a 150-player pack with 1 BigTime and 2 ShowTimes. I really want the BigTime, and I'm willing to roll 5 draws of 10 players each (spending 5*900=4500 coins)."
