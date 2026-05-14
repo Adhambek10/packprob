@@ -1,5 +1,6 @@
 from math import comb, isclose
 
+
 def epic_chance(total_size: int, n_desired: int, draw_size: int) -> dict[int, float]:
     """Calculate the probability of *actually* getting the player(s) you want 
        from an eFootball pack draw! Yeah, it'll be less than you think...
@@ -95,10 +96,23 @@ def epic_chance(total_size: int, n_desired: int, draw_size: int) -> dict[int, fl
     
     # Let's print the information so we completely understand it.
     Prob_X_geq_1 = 1 - Prob_X_eq[0]
-    print(f"{Prob_X_geq_1*100:.1f}% chance that you'll get something you want (i.e. avoid X=0)! Worth it?\n")
+    print(f"\n{Prob_X_geq_1*100:.1f}% chance that you'll get something you want (i.e. avoid X=0)! Worth it?\n")
     print("Here's the rest of the picture - chances of getting each number of "
           "desired players (e.g. epics) during this draw:\n")
     for n, chance in Prob_X_eq.items():
         print(f"{n}: {chance*100:.1f}%")
     assert isclose(sum(Prob_X_eq.values()), 1)
     return Prob_X_eq
+
+
+import re
+def text_to_markdown(my_text: str) -> str:
+    """Convert the "\n"s in my print messages to Markdown's "  \n"s, but preserve my "\n\n"s
+
+    :param str my_text: A print message.
+    :return str: The print message but with newlines replaced for Markdown aesthetics.
+    """
+    # (?<!\n) means "not preceded by \n"
+    # (?!\n)  means "not followed by \n"
+    my_text_markdown = re.sub(r'(?<!\n)\n(?!\n)', '  \n', my_text)
+    return my_text_markdown
