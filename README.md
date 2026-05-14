@@ -61,14 +61,14 @@ Here's the rest of the picture - chances of getting each number of desired playe
 
 > **Usage**: `epic_chance(250-1, 7, 10)`
 > 
-> **Output**: `{0: 0.7478759630652251,
-            1: 0.22468376572775,
-            2: 0.025925049891663464,
-            3: 0.0014709248165482817,
-            4: 4.362912591456768e-05,
-            5: 6.627208999681165e-07,
-            6: 4.640902660841153e-09,
-            7: 1.109600158001471e-11}`
+> **Output**: `{0: 0.7478759630652251, 
+>            1: 0.22468376572775,
+>            2: 0.025925049891663464,
+>            3: 0.0014709248165482817,
+>            4: 4.362912591456768e-05,
+>            5: 6.627208999681165e-07,
+>            6: 4.640902660841153e-09,
+>            7: 1.109600158001471e-11}`
 
 So that's a 2.59% (~1 in 40) chance to start. But we were luckier than that - how many of these 
 epic 2-combos include Hazard specifically? There are *7-choose-2* $\binom{7}{2}=21$ total combos, 6 of which include 
