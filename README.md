@@ -88,16 +88,16 @@ We can frame our curiosity on bad luck as: "how many ways are there to draw 10, 
 
 Well, that's not too hard - that's just 242-choose-10, $\binom{242}{10}=157,237,259,217,593,698$. Okay that's a lot of ways, but you have to consider it in relation to aaaaalll the ways you can draw 10, i.e. 249-choose-10, $\binom{249}{10}$, which is even bigger than that (I won't write it out). The probability then, of ending up in one of those horrible universes with 0 desired cards within the space of all universese, is...
 
-$\frac{\binom{242}{10}}{\binom{249}{10}} \approx 0.748 = 74.8\%$
+$$\frac{\binom{242}{10}}{\binom{249}{10}} \approx 0.748 = 74.8\%$$
 
 and from that we know the complement of 25.2% is the chance of getting $\geq 1$ desired cards! This checks out with Example 2.
 
 The extension from this is: "what about getting $x$ desired cards exactly? We'd probably need to account for all ways to draw $x$ from the 7 desireds, and also all ways to draw the other $10-x$ from the 242 undesireds, right?" Yup, framing the question right makes probability easy:
 
-$\frac{\binom{7}{x} \binom{242}{10-x}}{\binom{249}{10}}$.
+$$\frac{\binom{7}{x} \binom{242}{10-x}}{\binom{249}{10}}$$
 
-For $x=2$, we have 
+and for $x=2$, we have 
 
-$\frac{\binom{7}{2} \binom{242}{8}}{\binom{249}{10}} \approx 0.0259 = 2.6\%$
+$$\frac{\binom{7}{2} \binom{242}{8}}{\binom{249}{10}} \approx 0.0259 \approx 2.6\%$$
 
 which again checks out with Example 2!
