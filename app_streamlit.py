@@ -1,7 +1,5 @@
 import streamlit as st
-from utils import epic_chance, generate_message
-from contextlib import redirect_stdout
-import io
+from utils import epic_chance, generate_message, st_image_cycler
 import pandas as pd
 
 
@@ -63,6 +61,8 @@ with left_cont:
 
                 # # Method 1: redirect_stdout() to pipe print statements
                 # # Problem: Can't cache epic_chance() outputs, because we'd need it to print every time!
+                # from contextlib import redirect_stdout
+                # import io
                 # f = io.StringIO()   # Capture all the print statements
                 # with redirect_stdout(f):
                 #     pulls_chance_dict = epic_chance(total_size, n_desired, draw_size, verbose=True)
@@ -80,8 +80,13 @@ with left_cont:
         st.info("If on mobile, scroll down for results!", icon='📲')
     
     # Example screenshot of an eFootball campaign with colored squares highlighting what to input
-    st.image('assets/pack-info-squares.png')
-    st.image('assets/pack-desired-squares.png')
+    # # Method 1: Single image, but opens other image as link when you click it
+    # st.image('assets/pack-info-squares.png', link='assets/pack-desired-squares.png')
+    # Method 2: Make a container cycle images when you click next, like a slideshow
+    # Problem: Choppy and not very nice looking...
+    st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
+    # Method 3: Use streamlit-carousel package
+    # TODO
 
 
 with right_cont:
