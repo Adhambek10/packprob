@@ -1,7 +1,9 @@
 from math import comb, isclose
+import streamlit as st
 
 
-def epic_chance(total_size: int, n_desired: int, draw_size: int) -> dict[int, float]:
+@st.cache_data    # Beware, this stops the function from making print statements!
+def epic_chance(total_size: int, n_desired: int, draw_size: int, verbose: bool = True) -> dict[int, float]:
     """Calculate the probability of *actually* getting the player(s) you want 
        from an eFootball pack draw! Yeah, it'll be less than you think...
 
@@ -94,15 +96,35 @@ def epic_chance(total_size: int, n_desired: int, draw_size: int) -> dict[int, fl
             / comb(total_size, draw_size)
         )
     
-    # Let's print the information so we completely understand it.
-    Prob_X_geq_1 = 1 - Prob_X_eq[0]
-    print(f"\n{Prob_X_geq_1*100:.1f}% chance that you'll get something you want (i.e. avoid X=0)! Worth it?\n")
-    print("Here's the rest of the picture - chances of getting each number of "
-          "desired players (e.g. epics) during this draw:\n")
-    for n, chance in Prob_X_eq.items():
-        print(f"{n}: {chance*100:.1f}%")
+    if verbose:  # Alternatively, user may just want the output dict so they can format it in Pandas, etc.
+        # Let's print the information so we completely understand it.
+        # NOTE: We're printing in Markdown format, where '\n\n' is a spaced newline, and '  \n' is a non-spaced newline.
+        message_md = generate_message(total_size, n_desired, draw_size, Prob_X_eq, print_dict=True)
+        print(message_md)
+
     assert isclose(sum(Prob_X_eq.values()), 1)
     return Prob_X_eq
+
+
+@st.cache_data
+def generate_message(total_size, n_desired, draw_size, pulls_chance_dict, print_dict=True):
+    Prob_X_geq_1 = 1 - pulls_chance_dict[0]     # Prob_X_geq_1 = 1 - Prob_X_eq[0]
+    # NOTE: We're writing in the Markdown format, where '\n\n' is a spaced newline, and '  \n' is a non-spaced newline.
+    out_str = (
+        "----  \n"
+        f"{total_size}-{n_desired}-{draw_size}\n\n"
+        f"**{Prob_X_geq_1*100:.1f}%** chance that you'll pull at least one! Worth it?\n\n"
+    )
+    if print_dict:
+        extend_str = (
+            "Here's the rest of the picture - **chance** of getting each number of "
+            "**desired** cards (e.g. epic players) while drawing:\n\n"
+        )
+        for n, chance in pulls_chance_dict.items():
+            extend_str += f"{n} pulls: **{chance*100:.1f}%**  \n"
+        extend_str += '\n'  # End it with a nice spaced newline
+        out_str += extend_str
+    return out_str
 
 
 import re
