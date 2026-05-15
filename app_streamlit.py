@@ -21,11 +21,11 @@ st.text("Calculate the probability of actually getting the player(s) you want fr
 
 # GUI base layout horizontal - left for inputs, right for outputs
 # # Method 1: Horizontal base container
+# # Problem: Doesn't auto-switch to vertical layout for mobile!
 # base_cont = st.container(horizontal=True)
 # left_cont = base_cont.container(border=True)
 # right_cont = base_cont.container(border=True)
-# Method 2: Columns; maybe more mobile-friendly?
-# TODO: Try this, because horizontal container isn't working on mobile lol
+# Method 2: Columns as base container - more mobile-friendly!
 left_cont, right_cont = st.columns(2, border=True)
 
 
@@ -76,6 +76,8 @@ with left_cont:
                 st.session_state['output_dict'] = pulls_chance_dict
             except Exception as e:
                 st.exception(e)
+        st.toast("Calculation complete.", icon='✅')
+        st.info("If on mobile, scroll down for results!", icon='📲')
     
     # Example screenshot of an eFootball campaign with colored squares highlighting what to input
     st.image('assets/pack-info-squares.png')
