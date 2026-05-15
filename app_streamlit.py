@@ -20,11 +20,13 @@ st.text("Calculate the probability of actually getting the player(s) you want fr
 
 
 # GUI base layout horizontal - left for inputs, right for outputs
-base_cont = st.container(horizontal=True)
-left_cont = base_cont.container(border=True)
-right_cont = base_cont.container(border=True)
-# Alternate method for doing horizontal layout, maybe more mobile-friendly?
-# left_cont, right_cont = st.columns(2, border=True)
+# # Method 1: Horizontal base container
+# base_cont = st.container(horizontal=True)
+# left_cont = base_cont.container(border=True)
+# right_cont = base_cont.container(border=True)
+# Method 2: Columns; maybe more mobile-friendly?
+# TODO: Try this, because horizontal container isn't working on mobile lol
+left_cont, right_cont = st.columns(2, border=True)
 
 
 with left_cont:
