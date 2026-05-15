@@ -81,7 +81,7 @@ with left_cont:
     
     # Example screenshot of an eFootball campaign with colored squares highlighting what to input
     # Method 1: Single image, but opens other image as link when you click it
-    st.image('assets/pack-info-squares.png', link='assets/pack-desired-squares.png')
+    st.image('assets/pack-info-squares.png', caption='Colored boxes show where you can find the inputs.')
     # # Method 2: Make a container cycle images when you click next, like a slideshow
     # # Problem: Choppy and not very nice looking...
     # st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
