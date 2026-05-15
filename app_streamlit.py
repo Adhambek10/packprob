@@ -1,6 +1,7 @@
 import streamlit as st
 from utils import epic_chance, generate_message, st_image_cycler
 import pandas as pd
+from streamlit_carousel import carousel
 
 
 # GUI heading
@@ -82,11 +83,27 @@ with left_cont:
     # Example screenshot of an eFootball campaign with colored squares highlighting what to input
     # # Method 1: Single image, but opens other image as link when you click it
     # st.image('assets/pack-info-squares.png', link='assets/pack-desired-squares.png')
-    # Method 2: Make a container cycle images when you click next, like a slideshow
-    # Problem: Choppy and not very nice looking...
-    st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
-    # Method 3: Use streamlit-carousel package
-    # TODO
+    # # Method 2: Make a container cycle images when you click next, like a slideshow
+    # # Problem: Choppy and not very nice looking...
+    # st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
+    # Method 3: Use streamlit-carousel package for nice Bootstrap carousel
+    INPUT_TUTORIAL = [
+        dict(
+            # title="Slide 1",
+            title=None,
+            # text="Colored boxes show where you can find the inputs.",
+            text=None,
+            img='assets/pack-info-squares.png'
+        ),
+        dict(
+            # title="Slide 2",
+            title=None,
+            # text="More detail on the blue box, i.e. counting the 7 epic cards in the pack.",
+            text=None,
+            img='assets/pack-desired-squares.png'
+        ),
+    ]
+    carousel(items=INPUT_TUTORIAL, container_height=200, indicators=False, interval=None)
 
 
 with right_cont:
