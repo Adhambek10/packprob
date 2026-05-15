@@ -138,3 +138,41 @@ def text_to_markdown(my_text: str) -> str:
     # (?!\n)  means "not followed by \n"
     my_text_markdown = re.sub(r'(?<!\n)\n(?!\n)', '  \n', my_text)
     return my_text_markdown
+
+
+def st_image_cycler(image_list: list[str]) -> st.delta_generator.DeltaGenerator:
+    """Very simplistic image carousel. 
+       Problems:
+         - Can't make multiple since the session_state key is fixed. 
+         - The image refresh/reload is choppy. 
+         - The "next" button gets wrapped around to the bottom if this cycler container is nested.
+
+    :param list[str] image_list: e.g. ['assets/pack-info-squares.png', 'assets/pack-desired-squares.png']
+    :return st.delta_generator.DeltaGenerator: The new container holding the image and the next button.
+    """
+    assert len(image_list) > 0
+
+    if 'image_cycler_curr_idx' not in st.session_state:
+        # Set up internal session state needed
+        st.session_state['image_cycler_len'] = len(image_list)
+        st.session_state['image_cycler_list'] = image_list
+        st.session_state['image_cycler_curr_idx'] = 0
+    
+    # Set up horizontal container with image and next button
+    base_cont = st.container(horizontal=True, border=True,
+                             horizontal_alignment='right',
+                             vertical_alignment='center')   # Alignments mainly for the button
+
+    # Left: Image
+    image_placeholder = base_cont.empty()
+    image_placeholder.image(st.session_state.image_cycler_list[st.session_state.image_cycler_curr_idx])
+    
+    # Right: Next button
+    # NOTE: This doesn't work well when nested into another container; 
+    #       the width of the external container forces the button underneath, rather than to the right.
+    next_button = base_cont.button('⏭️')
+    if next_button:
+        st.session_state.image_cycler_curr_idx = (st.session_state.image_cycler_curr_idx + 1) % st.session_state.image_cycler_len
+        image_placeholder.image(st.session_state.image_cycler_list[st.session_state.image_cycler_curr_idx])
+    
+    return base_cont    # Really don't need to return this...
