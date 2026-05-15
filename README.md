@@ -1,3 +1,5 @@
+![packprob colorful eFootball banner](/assets/efootball-banner-cropped.jpeg)
+
 # packprob: eFootball Pack Probability Calculator <!-- omit from toc -->
 
 Calculate the probability of *actually* getting the player(s) you want from an eFootball pack draw! Yeah, it'll be less than you think...
@@ -24,6 +26,8 @@ Here's the rest of the picture - chances of getting each number of desired playe
 1: 33.3%
 
 ## Example 2: Normal use case
+
+![Example 2 scenario: 249 cards, targeting 7 (including Ibra and Hazard), drawing 10 by paying coins](/assets/pack-info-squares.png)
 
 **Scenario**: "It's a 250-player pack with 7 epics. I just started playing so would be happy with 
             any of the 7. I just saved up 900 coins so can only roll once for 10 players! Konami 
@@ -52,6 +56,8 @@ Here's the rest of the picture - chances of getting each number of desired playe
 7: 0.0%
 
 ## Example 3: Using packprob to analyze your luck
+
+![Example 3 scenario: pulling BigTime Hazard and Blitz Sneijder](/assets/big-time-pull.png)
 
 **Scenario**: "Woah, I just pulled BigTime Hazard AND epic Sneijder in my first 10-draw! I must be the 
             luckiest person on the planet - I wonder what were the chances of pulling 2 epics including 

@@ -6,7 +6,7 @@ import pandas as pd
 
 
 # GUI heading
-st.image('assets/efootball-banner-cropped.jpeg')    # TODO: Put banner, squares, and pull on GitHub
+st.image('assets/efootball-banner-cropped.jpeg')
 # SEO stuff; google "site:packprob.streamlit.app" to check this indexed meta info
 st.set_page_config(page_title="packprob")   # SEO
 st.title("packprob")
