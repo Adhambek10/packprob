@@ -1,4 +1,4 @@
+matplotlib==3.10.9
 numpy==2.4.5
 pandas==3.0.3
 streamlit==1.57.0
-streamlit_carousel==1.1.2

@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import epic_chance, generate_message, st_image_cycler
+from utils import epic_chance, generate_message, highlight_relevant_chances
 import pandas as pd
 
 
@@ -41,7 +41,7 @@ with left_cont:
                         help="e.g. If there are 7 epics and you don't really need 3 of them, then enter \"4\".")
     draw_size = \
         st.number_input("# of cards you'll draw 🟪:", 
-                        value=10, min_value=1, max_value=total_size,
+                        value=10, min_value=1, max_value=total_size, step=10,
                         key='draw_size',
                         help="e.g. If you're dropping 900 coins to get the discounted 10 chances, then enter \"10\".")
 
@@ -80,10 +80,12 @@ with left_cont:
         st.info("If on mobile, scroll down for results!", icon='📲')
     
     # Example screenshot of an eFootball campaign with colored squares highlighting what to input
-    # Method 1: Single image, but opens other image as link when you click it
+    # Method 1: Simple, single image
+    # NOTE: Can't URL link to other local images
     st.image('assets/pack-info-squares.png', caption='Colored boxes show where you can find the inputs.')
     # # Method 2: Make a container cycle images when you click next, like a slideshow
     # # Problem: Choppy and not very nice looking...
+    # from utils import st_image_cycler
     # st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
     # # Method 3: Use streamlit-carousel package for nice Bootstrap carousel
     # # Problem: Sizing is tricky, and there's no zoom on the images!
@@ -123,12 +125,26 @@ with right_cont:
             # The table of probabilities
             out_ser = pd.Series(st.session_state.output_dict)
             out_ser.index.name = 'Pulls'
-            out_ser.name = 'Chance'
+            out_ser.name = 'Raw Chance'
+            out_df = out_ser.to_frame()
+            out_df['1 in...'] = 1/out_df['Raw Chance']  # Make new column
+            out_df['Chance'] = out_df['Raw Chance']*100     # Make cleaner percent column for formatting
+            # Apply highlighting; Pandas makes this way too difficult
+            styled_df = (
+                out_df[['Raw Chance', 'Chance', '1 in...']]
+                .style.apply(highlight_relevant_chances, axis=1)    # Needs 'Raw Chance' column
+                # .hide('Raw Chance', axis=1)   # https://github.com/streamlit/streamlit/issues/7007 Ah Streamlit doesn't support this
+            )
             st.dataframe(
-                out_ser,
+                styled_df,
+                column_order=['Chance', '1 in...'],     # Need this because Streamlit doesn't support Pandas .hide()
                 column_config={
                     'Chance': st.column_config.NumberColumn(
-                        format='percent'
-                    )
+                        # format='percent'
+                        format='%.1f%%'     # Need to multiply by 100 ahead of time
+                    ),
+                    '1 in...': st.column_config.NumberColumn(
+                        format='%,.2g'  # Sigfig rounding, since we want this to be intuitive
+                    ),
                 }
             )

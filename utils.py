@@ -1,5 +1,6 @@
 from math import comb, isclose
 import streamlit as st
+from matplotlib import colors
 
 
 @st.cache_data    # Beware, this stops the function from making print statements!
@@ -176,3 +177,39 @@ def st_image_cycler(image_list: list[str]) -> st.delta_generator.DeltaGenerator:
         image_placeholder.image(st.session_state.image_cycler_list[st.session_state.image_cycler_curr_idx])
     
     return base_cont    # Really don't need to return this...
+
+
+def highlight_relevant_chances(row) -> list[str]:
+    """For use with Pandas: my_df.style.apply(highlight_relevant_chances, axis=1)
+
+    :param _type_ row: pd.DataFrame row, where index can be accessed with .name
+    :return _type_: list of kwargs basically
+    """
+    # Apply a gradient green based on percent of success
+
+    # Since we'll rarely see "high" pack luck, let's normalize and clip
+    norm = colors.Normalize(vmin=0, vmax=0.5, clip=True)
+
+    # Skip the Pulls=0 row - it will be high percent, but it's a bad thing
+    if row.name == 0:   # row.name is index named "Pulls"
+        # return [''] * len(row)    # For rows we don't want to highlight
+        # return ['background-color: red'] * len(row)
+        my_bad_cmap = colors.LinearSegmentedColormap.from_list(
+            "red_transparent", 
+            [(0.75, 0, 0, 0), (0.75, 0, 0, 1)]
+        )
+        rgba = my_bad_cmap(norm(row['Raw Chance']))
+        hex_color = colors.to_hex(rgba, keep_alpha=True)    # Very important to keep the alpha for transparency!
+        return [f'background-color: {hex_color}'] * len(row)
+
+    # For other rows: calculate gradient color from matplotlib
+    # if row.name > 0 and row.name <= 3:
+        # return ['background-color: darkgreen'] * len(row)
+    # cmap = plt.get_cmap('Greens')     # I want the low end to be transparent for dark mode, not white!
+    my_good_cmap = colors.LinearSegmentedColormap.from_list(
+        "green_transparent", 
+        [(0, 0.75, 0, 0), (0, 0.75, 0, 1)]
+    )
+    rgba = my_good_cmap(norm(row['Raw Chance']))
+    hex_color = colors.to_hex(rgba, keep_alpha=True)    # Very important to keep the alpha for transparency!
+    return [f'background-color: {hex_color}'] * len(row)
