@@ -3,6 +3,18 @@ from utils import epic_chance, generate_message, highlight_relevant_chances
 import pandas as pd
 
 
+# # Manually adjust Streamlit "centered" page width - default 46rem
+# st.html(
+#     """
+#     <style>
+#         .stMainBlockContainer {
+#             max-width:46rem;
+#         }
+#     </style>
+#     """
+# )
+
+
 # GUI heading
 st.image('assets/efootball-banner-cropped.jpeg')
 # SEO stuff; google "site:packprob.streamlit.app" to check this indexed meta info
@@ -15,6 +27,9 @@ st.text("Calculate the probability of actually getting the player(s) you want fr
 
 
 # TODO: Sidebar with README from GitHub
+with open('README.md', 'r', encoding='utf-8') as file:
+    readme_md = file.read()
+st.sidebar.write(readme_md)
 
 
 # GUI base layout horizontal - left for inputs, right for outputs
@@ -53,7 +68,12 @@ with left_cont:
     # st.info('Invalid number configuration...', icon="🚨")
 
     # The execution trigger
-    if st.button("Calculate!"):
+    calc_button_cont = st.container(horizontal=True, horizontal_alignment='center', vertical_alignment='center', 
+                                    height=80,      # NOTE: Fixed height to prevent shifting content!
+                                    border=False)   # For debugging
+    calc_button = calc_button_cont.button("Calculate!")     # On the left
+    info_placeholder = calc_button_cont.empty()     # On the right
+    if calc_button:
         # st.info("Running the numbers...")   # Use either info or spinner
         with st.spinner("Running the numbers..."):
             try:
@@ -77,7 +97,7 @@ with left_cont:
             except Exception as e:
                 st.exception(e)
         st.toast("Calculation complete.", icon='✅')
-        st.info("If on mobile, scroll down for results!", icon='📲')
+        info_placeholder.info("If on mobile, scroll down for results!", icon='📲', width=200)   # NOTE: Fixed width to prevent shifting content
     
     # Example screenshot of an eFootball campaign with colored squares highlighting what to input
     # Method 1: Simple, single image
