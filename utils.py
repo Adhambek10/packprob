@@ -213,3 +213,27 @@ def highlight_relevant_chances(row) -> list[str]:
     rgba = my_good_cmap(norm(row['Raw Chance']))
     hex_color = colors.to_hex(rgba, keep_alpha=True)    # Very important to keep the alpha for transparency!
     return [f'background-color: {hex_color}'] * len(row)
+
+
+def activate_invisible_containers():
+    # Run this script to inject CSS defining invisible containers
+    # Then use: 
+    # st.markdown('<div class="invisible-container">', unsafe_allow_html=True)
+    # MY CONTENT CONTAINER
+    # st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        .invisible-container {
+            visibility: hidden;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+def begin_invisible_container():
+    st.markdown('<div class="invisible-container">', unsafe_allow_html=True)
+
+def end_invisible_container():
+    st.markdown('</div>', unsafe_allow_html=True)
