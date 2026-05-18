@@ -43,7 +43,38 @@ left_cont, right_cont = st.columns(2, border=True)
 
 
 with left_cont:
+    # Example screenshot of an eFootball campaign with colored squares highlighting what to input
+    # Method 1: Simple, single image
+    # NOTE: Can't URL link to other local images
+    st.image('assets/pack-info-squares.png', caption='Colored boxes show where you can find the inputs.')
+    # # Method 2: Make a container cycle images when you click next, like a slideshow
+    # # Problem: Choppy and not very nice looking...
+    # from utils import st_image_cycler
+    # st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
+    # # Method 3: Use streamlit-carousel package for nice Bootstrap carousel
+    # # Problem: Sizing is tricky, and there's no zoom on the images!
+    # from streamlit_carousel import carousel
+    # INPUT_TUTORIAL = [
+    #     dict(
+    #         # title="Slide 1",
+    #         title=None,
+    #         # text="Colored boxes show where you can find the inputs.",
+    #         text=None,
+    #         img='assets/pack-info-squares.png'
+    #     ),
+    #     dict(
+    #         # title="Slide 2",
+    #         title=None,
+    #         # text="More detail on the blue box, i.e. counting the 7 epic cards in the pack.",
+    #         text=None,
+    #         img='assets/pack-desired-squares.png'
+    #     ),
+    # ]
+    # carousel(items=INPUT_TUTORIAL, container_height=200, indicators=False, interval=None)
+
     # Fields for inputs from human user
+    # TODO: Try auto-refreshing calculation using callbacks here?
+    # TODO: Auto-calculate checkbox?
     total_size = \
         st.number_input("Total pack size (remaining) 🟥:", 
                         value=250, min_value=1, step=10,
@@ -98,35 +129,6 @@ with left_cont:
                 st.exception(e)
         st.toast("Calculation complete.", icon='✅')
         info_placeholder.info("If on mobile, scroll down for results!", icon='📲', width=200)   # NOTE: Fixed width to prevent shifting content
-    
-    # Example screenshot of an eFootball campaign with colored squares highlighting what to input
-    # Method 1: Simple, single image
-    # NOTE: Can't URL link to other local images
-    st.image('assets/pack-info-squares.png', caption='Colored boxes show where you can find the inputs.')
-    # # Method 2: Make a container cycle images when you click next, like a slideshow
-    # # Problem: Choppy and not very nice looking...
-    # from utils import st_image_cycler
-    # st_image_cycler(['assets/pack-info-squares.png', 'assets/pack-desired-squares.png'])
-    # # Method 3: Use streamlit-carousel package for nice Bootstrap carousel
-    # # Problem: Sizing is tricky, and there's no zoom on the images!
-    # from streamlit_carousel import carousel
-    # INPUT_TUTORIAL = [
-    #     dict(
-    #         # title="Slide 1",
-    #         title=None,
-    #         # text="Colored boxes show where you can find the inputs.",
-    #         text=None,
-    #         img='assets/pack-info-squares.png'
-    #     ),
-    #     dict(
-    #         # title="Slide 2",
-    #         title=None,
-    #         # text="More detail on the blue box, i.e. counting the 7 epic cards in the pack.",
-    #         text=None,
-    #         img='assets/pack-desired-squares.png'
-    #     ),
-    # ]
-    # carousel(items=INPUT_TUTORIAL, container_height=200, indicators=False, interval=None)
 
 
 with right_cont:
