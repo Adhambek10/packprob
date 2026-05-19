@@ -1,5 +1,6 @@
 from math import comb, isclose
 import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
 from matplotlib import colors
 
 
@@ -141,7 +142,7 @@ def text_to_markdown(my_text: str) -> str:
     return my_text_markdown
 
 
-def st_image_cycler(image_list: list[str]) -> st.delta_generator.DeltaGenerator:
+def st_image_cycler(image_list: list[str]) -> DeltaGenerator:
     """Very simplistic image carousel. 
        Problems:
          - Can't make multiple since the session_state key is fixed. 
@@ -149,7 +150,7 @@ def st_image_cycler(image_list: list[str]) -> st.delta_generator.DeltaGenerator:
          - The "next" button gets wrapped around to the bottom if this cycler container is nested.
 
     :param list[str] image_list: e.g. ['assets/pack-info-squares.png', 'assets/pack-desired-squares.png']
-    :return st.delta_generator.DeltaGenerator: The new container holding the image and the next button.
+    :return DeltaGenerator: The new container holding the image and the next button.
     """
     assert len(image_list) > 0
 
@@ -213,3 +214,35 @@ def highlight_relevant_chances(row) -> list[str]:
     rgba = my_good_cmap(norm(row['Raw Chance']))
     hex_color = colors.to_hex(rgba, keep_alpha=True)    # Very important to keep the alpha for transparency!
     return [f'background-color: {hex_color}'] * len(row)
+
+
+def st_markdown_image_parser(text_md: str, container: DeltaGenerator = st) -> None:
+    """Streamlit's st.write() can't parse images inside a Markdown README! So this runs 
+       regex to identify images in Markdown text and render them separately using st.image().
+
+    :param str text_md: The Markdown text imported as a string (i.e. using f.read())
+    :param DeltaGenerator container: st.sidebar, st.container, etc.; defaults to None (just st)
+    """
+    if container is None:
+        container = st  # So it'll be st.write(), etc.
+
+    # Regex to capture image alt text (invisible), URL/path, and optional hover title
+    pattern = r'!\[(?P<alt>[^\]]*)\]\((?P<url>[^\s\)]+)(?:\s+"(?P<title>[^"]*)")?\)'
+
+    last_end = 0
+    for match in re.finditer(pattern, text_md):
+        # Grab standard text BEFORE this image match and render with st.write()
+        text_before = text_md[last_end:match.start()]
+        if text_before:
+            container.write(text_before)
+            
+        # Grab the parsed image data and render with st.image()
+        image_dict = match.groupdict()
+        container.image(image_dict['url'], caption=image_dict['title'])
+        
+        last_end = match.end()  # Update position tracker
+
+    # Catch any remaining text AFTER the final image
+    remaining_text = text_md[last_end:]
+    if remaining_text:
+        container.write(remaining_text)

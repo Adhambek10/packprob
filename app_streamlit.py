@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import epic_chance, generate_message, highlight_relevant_chances
+from utils import epic_chance, generate_message, highlight_relevant_chances, st_markdown_image_parser
 import pandas as pd
 
 
@@ -29,7 +29,7 @@ st.text("Calculate the probability of actually getting the player(s) you want fr
 # TODO: Sidebar with README from GitHub
 with open('README.md', 'r', encoding='utf-8') as file:
     readme_md = file.read()
-st.sidebar.write(readme_md)
+st_markdown_image_parser(readme_md, st.sidebar)     # Better version of st.sidebar.write(readme_md)
 
 
 # GUI base layout horizontal - left for inputs, right for outputs
