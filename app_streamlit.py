@@ -73,8 +73,6 @@ with left_cont:
     # carousel(items=INPUT_TUTORIAL, container_height=200, indicators=False, interval=None)
 
     # Fields for inputs from human user
-    # TODO: Try auto-refreshing calculation using callbacks here?
-    # TODO: Auto-calculate checkbox?
     total_size = \
         st.number_input("Total pack size (remaining) 🟥:", 
                         value=250, min_value=1, step=10,
@@ -99,12 +97,20 @@ with left_cont:
     # st.info('Invalid number configuration...', icon="🚨")
 
     # The execution trigger
-    calc_button_cont = st.container(horizontal=True, horizontal_alignment='center', vertical_alignment='center', 
-                                    height=80,      # NOTE: Fixed height to prevent shifting content!
-                                    border=False)   # For debugging
-    calc_button = calc_button_cont.button("Calculate!")     # On the left
-    info_placeholder = calc_button_cont.empty()     # On the right
-    if calc_button:
+    # NOTE: Implemented continuous calculation checkbox using state checks here, instead of with callbacks on input fields!
+    # Container to hold button, checkbox, and info
+    calc_cont = st.container(horizontal=True, 
+                             height=100,      # NOTE: Fixed height to prevent shifting content!
+                             horizontal_alignment='center', vertical_alignment='center', 
+                             border=False)   # For debugging
+    # (Left) container to hold button (top) and checkbox (bottom)
+    calc_checkbox_cont = calc_cont.container(width=104, horizontal_alignment='center', border=False)
+    button_placeholder = calc_checkbox_cont.empty()     # Overly complex, but want 1) button above checkbox and 2) for button to react to checkbox!
+    calc_checkbox = calc_checkbox_cont.checkbox('Continuous', key='calc_checkbox')   # Bottom
+    calc_button = button_placeholder.button("Calculate!", disabled=st.session_state.calc_checkbox)   # Top
+    # (Right) container to hold info
+    info_placeholder = calc_cont.empty()
+    if calc_button or calc_checkbox:
         # st.info("Running the numbers...")   # Use either info or spinner
         with st.spinner("Running the numbers..."):
             try:
@@ -128,7 +134,7 @@ with left_cont:
             except Exception as e:
                 st.exception(e)
         st.toast("Calculation complete.", icon='✅')
-        info_placeholder.info("If on mobile, scroll down for results!", icon='📲', width=200)   # NOTE: Fixed width to prevent shifting content
+        info_placeholder.info("If on mobile, scroll down for results!", icon='📲', width=184)   # NOTE: Fixed width to prevent shifting content
 
 
 with right_cont:
