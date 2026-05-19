@@ -1,6 +1,7 @@
-![packprob colorful eFootball banner](/assets/efootball-banner-cropped.jpeg)
+![packprob colorful eFootball banner](assets/efootball-banner-cropped.jpeg)
 
 # packprob: eFootball Pack Probability Calculator <!-- omit from toc -->
+### ⚡ LIVE NOW AT <https://packprob.streamlit.app>
 
 Calculate the probability of *actually* getting the player(s) you want from an eFootball pack draw! Yeah, it'll be less than you think...
 
@@ -10,6 +11,7 @@ Calculate the probability of *actually* getting the player(s) you want from an e
 - [Example 2: Normal use case](#example-2-normal-use-case)
 - [Example 3: Using packprob to analyze your luck](#example-3-using-packprob-to-analyze-your-luck)
 - [How it works (AKA The Math)](#how-it-works-aka-the-math)
+- [Function Usage (API)](#function-usage-api)
 
 ## Example 1: An intuitive case
 
@@ -27,7 +29,7 @@ Here's the rest of the picture - chances of getting each number of desired playe
 
 ## Example 2: Normal use case
 
-![Example 2 scenario: 249 cards, targeting 7 (including Ibra and Hazard), drawing 10 by paying coins](/assets/pack-info-squares.png)
+![Example 2 scenario: 249 cards, targeting 7 (including Ibra and Hazard), drawing 10 by paying coins](assets/pack-info-squares.png)
 
 **Scenario**: "It's a 250-player pack with 7 epics. I just started playing so would be happy with 
             any of the 7. I just saved up 900 coins so can only roll once for 10 players! Konami 
@@ -57,7 +59,7 @@ Here's the rest of the picture - chances of getting each number of desired playe
 
 ## Example 3: Using packprob to analyze your luck
 
-![Example 3 scenario: pulling BigTime Hazard and Blitz Sneijder](/assets/big-time-pull.png)
+![Example 3 scenario: pulling BigTime Hazard and Blitz Sneijder](assets/big-time-pull.png)
 
 **Scenario**: "Woah, I just pulled BigTime Hazard AND epic Sneijder in my first 10-draw! I must be the 
             luckiest person on the planet - I wonder what were the chances of pulling 2 epics including 
@@ -111,3 +113,41 @@ and for $x=2$, we have
 ```
 
 which again checks out with Example 2!
+
+## Function Usage (API)
+
+This project is really just one function called `epic_chance()`; I hooked it up to a Streamlit framework front-end to turn it into the web app (my first time playing with web design!). I also planned to hook it into an offline executable app (maybe using Tkinter) - let me know if there's any desire for that?
+
+`epic_chance()` is in `utils.py`, in case you ever want to import it. Let's run through Example 2 (249 cards left in the pack, 7 desired, drawing 10) without the web GUI:
+
+**Usage**: `epic_chance(250-1, 7, 1*10)`
+
+**Output**: `{0: 0.7478759630652251,
+          1: 0.22468376572775,
+          2: 0.025925049891663464,
+          3: 0.0014709248165482817,
+          4: 4.362912591456768e-05,
+          5: 6.627208999681165e-07,
+          6: 4.640902660841153e-09,
+          7: 1.109600158001471e-11}`
+
+If you left `verbose=True`, then you'll also get the following explanation printed to console:
+
+> ----  
+> 249-7-10  
+**25.2%** chance that you'll pull at least one! Worth it?  
+Here's the rest of the picture - **chance** of getting each number of **desired** cards (e.g. epic players) while drawing:  
+0 pulls: **74.8%**  
+1 pulls: **22.5%**  
+2 pulls: **2.6%**  
+3 pulls: **0.1%**  
+4 pulls: **0.0%**  
+5 pulls: **0.0%**  
+6 pulls: **0.0%**  
+7 pulls: **0.0%**
+
+If random variable $X$ is the number of desired cards pulled in the given draw scenario, then the output dictionary is the mapping of 
+
+$$ x: Pr[X=x]. $$
+
+$1-Pr[X=0]$ is the chance you'll get *something*!
