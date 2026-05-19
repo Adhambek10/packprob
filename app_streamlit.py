@@ -1,5 +1,6 @@
 import streamlit as st
-from utils import epic_chance, generate_message, highlight_relevant_chances, st_markdown_image_parser
+from src import epic_chance, generate_message
+from utils import highlight_relevant_chances, st_markdown_image_parser
 import pandas as pd
 
 
