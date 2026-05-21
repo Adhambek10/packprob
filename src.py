@@ -111,11 +111,13 @@ def generate_message(total_size, n_desired, draw_size, pulls_chance_dict, print_
     """Helper to functionalize generating the Markdown print message for humans!
     """
     Prob_X_geq_1 = 1 - pulls_chance_dict[0]     # Prob_X_geq_1 = 1 - Prob_X_eq[0]
+    coin_cost = (draw_size//10) * 900 + (draw_size%10) * 100    # Assuming no discounts
     # NOTE: We're writing in the Markdown format, where '\n\n' is a spaced newline, and '  \n' is a non-spaced newline.
     out_str = (
         "----  \n"
         f"{total_size}-{n_desired}-{draw_size}\n\n"
-        f"**{Prob_X_geq_1*100:.1f}%** chance that you'll pull at least one! Worth it?\n\n"
+        f"**{Prob_X_geq_1*100:.1f}%** chance that you'll pull at least one (spending **{coin_cost:,} coins**)!  \n"
+        "Worth it?\n\n"
     )
     if print_dict:
         extend_str = (
