@@ -1,9 +1,4 @@
-![packprob colorful eFootball banner](assets/efootball-banner-cropped.jpeg)
-
-# packprob: eFootball Pack Probability Calculator <!-- omit from toc -->
-### ⚡ LIVE NOW AT <https://packprob.streamlit.app>
-
-Calculate the probability of *actually* getting the player(s) you want from an eFootball pack draw! Yeah, it'll be less than you think...
+### ⚡ GITHUB AT <https://github.com/gaibo/packprob>
 
 ![Demo of packprob: adjusting pack property inputs and seeing corresponding pull probability changes](assets/Demo.gif "Demo GIF!")
 

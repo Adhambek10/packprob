@@ -27,8 +27,8 @@ st.text("Calculate the probability of actually getting the player(s) you want fr
         "Yeah, it'll be less than you think...")    # SEO
 
 
-# TODO: Sidebar with README from GitHub
-with open('README.md', 'r', encoding='utf-8') as file:
+# Sidebar with README from GitHub
+with open('README_sidebar.md', 'r', encoding='utf-8') as file:
     readme_md = file.read()
 st_markdown_image_parser(readme_md, st.sidebar)     # Better version of st.sidebar.write(readme_md)
 
