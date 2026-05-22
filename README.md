@@ -9,21 +9,21 @@ Calculate the probability of *actually* getting the player(s) you want from an e
 
 eFootball is a free-to-play (F2P) video game subsisting on the **gacha** mechanic of spending "coins" to draw soccer player cards from fixed release packs.
 
-> **The problem**: Since the pack is finite and players are drawn without replacement, it is tempting to imagine that you can get what you want as long as you *keep drawing*. But just like in Blackjack (where you can technically double your lost bet and expect to recover)... **how long can you afford to keep drawing**? Mental intuition won't work when packs vary in size from 50 to 250 and contain 1 to 7 headliners!
+**The problem**: Since the pack is finite and players are drawn without replacement, it is tempting to imagine that you can get what you want as long as you *keep drawing*. But just like in Blackjack (where you can technically double your lost bet and expect to recover)... **how long can you afford to keep drawing**? Mental intuition won't work when packs vary in size from 50 to 250 and contain 1 to 7 headliners!
 
-> **The solution**: Bump up "cards you'll draw" on **packprob** until you see chances you like - that's what you'll need to budget. Ahead of time, see what an extra draw does (or *doesn't*) for your chances - no more sunk-cost fallacy pushing you for "one more spin" ($10 btw) in the heat of the moment.
+**The solution**: Bump up "cards you'll draw" on **packprob** until you see chances you like - that's what you'll need to budget. Ahead of time, see what an extra draw does (or *doesn't*) for your chances - no more sunk-cost fallacy pushing you for "one more spin" ($10 btw) in the heat of the moment.
 
 Life is hard, gambling is harder. We owe it to ourselves (and to the literal children playing this game) to facilitate better choices. Here, that boils down to understanding a classic problem: drawing playing cards from a deck. Maybe I can learn math, practice GUI design, and contribute to a community I love all at the same time?
 
 ### Table of Contents
 
-- [Example 1: Normal use case](#example-1-normal-use-case)
-  - [Extension: Budgeting](#extension-budgeting)
-  - [Extension: One more draw?](#extension-one-more-draw)
-  - [Extension: Multi-step probability](#extension-multi-step-probability)
+- [Example 1: Typical use case](#example-1-typical-use-case)
+  - [1.1 Budgeting](#11-budgeting)
+  - [1.2 One more draw?](#12-one-more-draw)
+  - [1.3 Multi-step probability](#13-multi-step-probability)
 - [Example 2: Using packprob to analyze your luck](#example-2-using-packprob-to-analyze-your-luck)
 - [How it works (AKA The Math)](#how-it-works-aka-the-math)
-  - [Extension: $x$ desired cards](#extension-x-desired-cards)
+  - [Extending to *x* desired cards](#extending-to-x-desired-cards)
 - [Function Usage (API)](#function-usage-api)
 
 <!-- ## Example 0: An intuitive case
@@ -40,7 +40,7 @@ Here's the rest of the picture - chances of getting each number of desired playe
 0: 66.7%  
 1: 33.3% -->
 
-## Example 1: Normal use case
+## Example 1: Typical use case
 
 ![In-game screenshot of the National All-Stars campaign from 2026-04](assets/pack-info-squares.png "Example 1: 249 cards left in deck, targeting 7 (including Ibra and Hazard), drawing 10 by paying coins.")
 
@@ -60,13 +60,13 @@ Here's the rest of the picture - chances of getting each number of desired playe
 
 From the table, we can also see that the 25.2% consists of 22.5% chance of pulling exactly 1 epic and a 2.6% chance - 1 in 39 - of pulling 2. That was surprising to me personally - 1 in 4 for pulling anything feels low, but 1 in 40 for pulling 2 when only drawing 10 total feels high!
 
-### Extension: Budgeting
+### 1.1 Budgeting
 
 Now suppose we have way more coins - let's simulate drawing more cards. Click the `+` on `# of cards you'll draw`. We'll skip the screenshot - the GIF in the intro actually already shows this! 
 
 Did you notice how the table turned greener with each click? Try it for yourself - at `249-7-30`, you'll see a ~60% chance of pulling, including ~40% for pulling 1, 16% chance for pulling 2, and 3.5% chance for pulling 3. You might think to yourself, "Drawing 30 costs $3 \times 900 = 2700$ coins, and I'm *more likely than not* to get something. Let's have a go."
 
-### Extension: One more draw?
+### 1.2 One more draw?
 
 Ah, you had a go. Fully clear-headed, 3 rolls, and yet you still ended up in the 0-pull outcome universe where you got nothing. Just bad luck. What now?
 
@@ -76,7 +76,7 @@ packprob still has your back. To see what another draw will do for you, click `-
 
 Hahahaha. Even with 30 fewer cards left in the deck, your draw-10 chance has **only increased from 25% to 28%**. In other words, still 1 in 4 chance if you go again. That should be surprising to most people - sunk-cost fallacy would have us thinking that giving up now is throwing away *everything we've built*. But we've only "built" 3%.
 
-### Extension: Multi-step probability
+### 1.3 Multi-step probability
 
 But wait! you say. Focusing on the 1-pull line of the table (I just want 1 epic, please!): `249-7-40` showed 40%, but `219-7-10` shows only 25%. I'm about to be 40 cards deep, and I haven't gotten my 1 pull. **Why is it now saying 25% - I want my 40%!**
 
@@ -124,7 +124,7 @@ Well, that's not too hard - that's just 242-choose-10, $\binom{242}{10}=157,237,
 
 and from that we know the complement - 25.2% - is the chance of getting $\geq 1$ desired cards! This checks out with Example 1.
 
-### Extension: $x$ desired cards
+### Extending to *x* desired cards
 
 "What about getting $x$ desired cards exactly?" you say. "We'd probably need to account for all ways to draw $x$ from the 7 desireds, and also all ways to draw the other $10-x$ from the 242 undesireds, right?" Yup, framing the question right makes probability easy:
 
