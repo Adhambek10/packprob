@@ -24,9 +24,9 @@ Life is hard, gambling is harder. We owe it to ourselves (and to the literal chi
   - [1.2 One more draw?](#12-one-more-draw)
   - [1.3 Multi-step probability](#13-multi-step-probability)
 - [Example 2: Using packprob to analyze your luck](#example-2-using-packprob-to-analyze-your-luck)
-- [How it works (AKA The Math)](#how-it-works-aka-the-math)
-  - [Extending to *x* desired cards](#extending-to-x-desired-cards)
-- [Function Usage (API)](#function-usage-api)
+- [3. How it works (AKA The Math)](#3-how-it-works-aka-the-math)
+  - [3.1 Extending to *x* desired cards](#31-extending-to-x-desired-cards)
+- [4. Function Usage (API)](#4-function-usage-api)
 
 <!-- ## Example 0: An intuitive case
 
@@ -60,13 +60,13 @@ Here's the rest of the picture - chances of getting each number of desired playe
 
 **25.2%** chance - about **1 in 4** (or 0.3 in 1.3 if you take the complement of the 0-pull) - of pulling an epic after dropping your entire savings isn't *great*, but it's certainly not nothing! 
 
-From the table, we can also see that the 25.2% consists of 22.5% chance of pulling exactly 1 epic and a 2.6% chance - 1 in 39 - of pulling 2. That was surprising to me personally - 1 in 4 for pulling anything feels low, but 1 in 40 for pulling 2 when only drawing 10 total feels high!
+From the table, we can also see that the 25.2% consists of 22.5% chance of pulling exactly 1 epic and a 2.6% chance - 1 in 39 - of pulling 2. That was surprising to me personally - 1 in 4 for pulling anything feels low, but 1 in 40 for pulling 2 when only drawing 10 feels high!
 
 ### 1.1 Budgeting
 
 Now suppose we have way more coins - let's simulate drawing more cards. Click the `+` on `# of cards you'll draw`. We'll skip the screenshot - the GIF in the intro actually already shows this! 
 
-Did you notice how the table turned greener with each click? Try it for yourself - at `249-7-30`, you'll see a ~60% chance of pulling, including ~40% for pulling 1, 16% chance for pulling 2, and 3.5% chance for pulling 3. You might think to yourself, "Drawing 30 costs $3 \times 900 = 2700$ coins, and I'm *more likely than not* to get something. Let's have a go."
+Did you notice how the table turned greener with each click? Try it for yourself - at `249-7-30`, you'll see a ~60% chance of pulling, including ~40% for pulling 1, 16% chance for pulling 2, and 3.5% chance for pulling 3. You might think to yourself, "Drawing 30 costs $3 \times 900 = 2700$ coins, which I comfortably have, and I'm *more likely than not* to get something. Let's have a go."
 
 ### 1.2 One more draw?
 
@@ -88,7 +88,7 @@ Ah! you say. So **from my current outcome universe** (0-then-0-then-0), I have *
 
 ![Really ugly PowerPoint figure showing probabilities of jumping between intermediate outcome nodes](assets/example-1-multistep.png "An ugly graph showing probabilities of jumping between intermediate outcome nodes")
 
-I drew a simpler scenario than discussed to avoid another level of outcome nodes and the accompanying edges, but the idea is the same. Yes, you originally had a 35% chance to go from A to E, but if you're already now standing at B, you have only a 23% chance of fulfilling in the next roll (outcome E), and you're waaay more likely (the other 77%) to end up in D!
+I drew a simpler scenario than discussed to avoid another level of outcome nodes and the accompanying edges, but the idea holds. Yes, you originally had a 35% chance to go from A to E, but if you're already now standing at B, you have only a 23% chance path of fulfilling outcome E in the next roll, and you're waaay more likely (the other 77%) to end up in D!
 
 ## Example 2: Using packprob to analyze your luck
 
@@ -103,16 +103,16 @@ I drew a simpler scenario than discussed to avoid another level of outcome nodes
 ![packprob GUI output for Example 2](assets/example-2-2pull.png "We've seen this exact table in Example 1 - check the 2-pull chance!")
 
 So that's a 2.6% (~1 in 39) chance to start. But we were luckier than that - how many of these 
-epic 2-combos include Hazard specifically? There are *7-choose-2* $\binom{7}{2}=21$ total combos, 6 of which include 
+epic 2-combos include headliner Hazard specifically? There are *7-choose-2* $\binom{7}{2}=21$ total combos, 6 of which include 
 Hazard (just fix Hazard and then cycle through the other 6). That's a 2/7 chance on top of the 
 2.59% - multiplying for concurrency we get **0.74%**, or **1 in 135**!
 
 **Answer**: So I am very lucky, but not the luckiest in the world! On average, 1 in every 135 players who 
         drew 10 experienced the same unforgettable Big Time double walkout animation. And as we know, 
         there are more than one million "serious" players competing in Divisions on mobile - if 1 million 
-        went for the pack, then we'd estimate $\frac{1e6}{135} \approx 7407$ people had the same luck.
+        went for the pack, then we'd estimate $\frac{1e6}{135} \approx 7,407$ people had the same luck.
 
-## How it works (AKA The Math)
+## 3. How it works (AKA The Math)
 
 Let's go back to our scenario in Example 1 - 249 cards left in the pack, 7 desired, drawing 10. 
 
@@ -124,9 +124,9 @@ Well, that's not too hard - that's just 242-choose-10, $\binom{242}{10}=157,237,
 \frac{\binom{242}{10}}{\binom{249}{10}} \approx 0.748 = 74.8\%
 ```
 
-and from that we know the complement - 25.2% - is the chance of getting $\geq 1$ desired cards! This checks out with Example 1.
+and from that we know the complement - 25.2% - is the chance of getting *some* ($\geq 1$) desired cards! This checks out with Example 1.
 
-### Extending to *x* desired cards
+### 3.1 Extending to *x* desired cards
 
 "What about getting $x$ desired cards exactly?" you say. "We'd probably need to account for all ways to draw $x$ from the 7 desireds, and also all ways to draw the other $10-x$ from the 242 undesireds, right?" Yup, framing the question right makes probability easy:
 
@@ -140,9 +140,9 @@ and for $x=2$, we have
 
 which again checks out with Example 1!
 
-## Function Usage (API)
+## 4. Function Usage (API)
 
-This project is really just one function called `epic_chance()`; I hooked it up to a Streamlit framework front-end to turn it into the web app (my first time playing with web design!). I also planned to hook it into an offline executable app (maybe using Tkinter) - let me know if there's any desire for that?
+This project is really just one function called `epic_chance()`; I hooked it up to a Streamlit framework front-end to turn it into the web app. I also planned to hook it into an offline executable app (maybe using Tkinter) - let me know if there's any desire for that?
 
 `epic_chance()` is in `src.py`, in case you ever want to import it. Let's run through Example 1 (249 cards left in the pack, 7 desired, drawing 10) without the web GUI:
 
@@ -177,3 +177,7 @@ If random variable $X$ is the number of desired cards pulled in the given draw s
 $$ x: Pr[X=x]. $$
 
 Observe that $1-Pr[X=0]$ (1 minus `output[0]`) is the chance you'll get *something*, and that's what prints the 25.2%.
+
+---
+
+Thanks for reading to the end; please let me know what you think, or open an issue if something doesn't seem right! 
