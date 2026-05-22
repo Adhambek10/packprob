@@ -9,9 +9,11 @@ Calculate the probability of *actually* getting the player(s) you want from an e
 
 eFootball is a free-to-play (F2P) video game subsisting on the **gacha** mechanic of spending "coins" to draw soccer player cards from fixed release packs.
 
-**The problem**: Since the pack is finite and players are drawn without replacement, it is tempting to imagine that you can get what you want as long as you *keep drawing*. But just like in Blackjack (where you can technically double your lost bet and expect to recover)... **how long can you afford to keep drawing**? Mental intuition won't work when packs vary in size from 50 to 250 and contain 1 to 7 headliners!
+**The problem**:  
+> Since the pack is finite and players are drawn without replacement, it is tempting to imagine that you can get what you want as long as you *keep drawing*. But just like in Blackjack (where you can technically double your lost bet and expect to recover)... **how long can you afford to keep drawing**? Mental intuition won't work when packs vary in size from 50 to 250 and contain 1 to 7 headliners!
 
-**The solution**: Bump up "cards you'll draw" on **packprob** until you see chances you like - that's what you'll need to budget. Ahead of time, see what an extra draw does (or *doesn't*) for your chances - no more sunk-cost fallacy pushing you for "one more spin" ($10 btw) in the heat of the moment.
+**The solution**:  
+> Bump up "cards you'll draw" on **packprob** until you see chances you like - that's what you'll need to budget. Ahead of time, see what an extra draw does (or *doesn't*) for your chances - no more sunk-cost fallacy pushing you for "one more spin" ($10 btw) in the heat of the moment.
 
 Life is hard, gambling is harder. We owe it to ourselves (and to the literal children playing this game) to facilitate better choices. Here, that boils down to understanding a classic problem: drawing playing cards from a deck. Maybe I can learn math, practice GUI design, and contribute to a community I love all at the same time?
 
