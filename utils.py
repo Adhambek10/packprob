@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 from matplotlib import colors
 import re
+import pandas as pd
 
 
 def text_to_markdown(my_text: str) -> str:
@@ -121,3 +122,66 @@ def st_markdown_image_parser(text_md: str, container: DeltaGenerator = st) -> No
     remaining_text = text_md[last_end:]
     if remaining_text:
         container.write(remaining_text)
+
+
+def st_save_to_chatbot(content, role='assistant', history=False) -> None:
+    """Save chatbot-style "messages" to st.session_state
+    """
+    # Initialize chat history, in case of first run...
+    # or forget chat history when we don't need a scrollable chatbox
+    if 'messages' not in st.session_state or history == False:
+        st.session_state.messages = []
+    st.session_state.messages.append({'role': role, 'content': content})
+
+
+def st_display_packprob(output_markdown: str, output_dict: dict) -> None:
+    """Helper to visually format and print packprob's two outputs.
+       Usage: st_display_packprob(st.session_state.output_markdown, st.session_state.output_dict)
+
+    :param str output_markdown: Explanatory text for human reading.
+    :param dict output_dict: Dictionary representing a table of probabilities.
+    """
+    # The explanation
+    # st.text(repr(st.session_state.output_markdown))   # For debugging Markdown newlines!
+    st.success(output_markdown)     # NOTE: This prints
+
+    # The table of probabilities
+    out_ser = pd.Series(output_dict)
+    out_ser.index.name = 'Pulls'
+    out_ser.name = 'Raw Chance'
+    out_df = out_ser.to_frame()
+    out_df['1 in...'] = 1/out_df['Raw Chance']  # Make new column
+    out_df['Chance'] = out_df['Raw Chance']*100     # Make cleaner percent column for formatting
+    # Apply highlighting; Pandas makes this way too difficult
+    styled_df = (
+        out_df[['Raw Chance', 'Chance', '1 in...']]
+        .style.apply(highlight_relevant_chances, axis=1)    # Needs 'Raw Chance' column
+        # .hide('Raw Chance', axis=1)   # https://github.com/streamlit/streamlit/issues/7007 Ah Streamlit doesn't support this
+    )
+    st.dataframe(   # NOTE: This prints
+        styled_df,
+        column_order=['Chance', '1 in...'],     # Need this because Streamlit doesn't support Pandas .hide()
+        column_config={
+            'Chance': st.column_config.NumberColumn(
+                # format='percent'
+                format='%.1f%%'     # Need to multiply by 100 ahead of time
+            ),
+            '1 in...': st.column_config.NumberColumn(
+                format='%,.2g'  # Sigfig rounding, since we want this to be intuitive
+            ),
+        }
+    )
+
+
+def st_display_chatbot_packprob():
+    """Create chat message style print log, so we can see output history!
+    """
+    for message in st.session_state.messages:   # NOTE: Assumes messages are set up in session_state
+        with st.chat_message(message['role']):  # E.g. alternating 'user' and 'assistant'
+            if message['role'] == 'assistant':
+                # Custom print function for specialized content
+                st_display_packprob(message['content']['output_markdown'],
+                                    message['content']['output_dict'])
+            else:
+                # 'user', etc.
+                st.write(message['content'])

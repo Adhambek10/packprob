@@ -1,7 +1,6 @@
 import streamlit as st
 from src import epic_chance, generate_message
-from utils import highlight_relevant_chances, st_markdown_image_parser
-import pandas as pd
+from utils import st_markdown_image_parser, st_save_to_chatbot, st_display_chatbot_packprob
 
 
 # # Manually adjust Streamlit "centered" page width - default 46rem
@@ -130,8 +129,15 @@ with left_cont:
                 pulls_chance_dict = epic_chance(total_size, n_desired, draw_size, verbose=False)
                 message_md = generate_message(total_size, n_desired, draw_size, pulls_chance_dict, print_dict=False)
 
-                st.session_state['output_markdown'] = message_md
-                st.session_state['output_dict'] = pulls_chance_dict
+                # Save outputs into st.session_state's chat history (in style of Streamlit conversational app)
+                content = {
+                    'output_markdown': message_md,
+                    'output_dict': pulls_chance_dict
+                }
+                # NOTE: Set history=True to enable chat history, beyond just 1 most recent content
+                # st_save_to_chatbot(f"{total_size}-{n_desired}-{draw_size}", 'user', history=True)
+                # st_save_to_chatbot(content, 'assistant', history=True)
+                st_save_to_chatbot(content, history=False)
             except Exception as e:
                 st.exception(e)
         st.toast("Calculation complete.", icon='✅')
@@ -139,41 +145,10 @@ with left_cont:
 
 
 with right_cont:
-    if 'output_dict' not in st.session_state:  # Check existence of result
+    if 'messages' not in st.session_state:  # Check existence of result
         st.info("Waiting for your numbers...")
     else:
         # Print the final results for the human user
-        # TODO: Make a chat message style print log, so we can see history!
-        #       Requires using st.session_state to keep full list of printouts...
-        # with st.container(border=True):
-        with st.chat_message("assistant"):
-            # The explanation
-            # st.text(repr(st.session_state.output_markdown))   # For debugging Markdown newlines!
-            st.success(st.session_state.output_markdown)
-
-            # The table of probabilities
-            out_ser = pd.Series(st.session_state.output_dict)
-            out_ser.index.name = 'Pulls'
-            out_ser.name = 'Raw Chance'
-            out_df = out_ser.to_frame()
-            out_df['1 in...'] = 1/out_df['Raw Chance']  # Make new column
-            out_df['Chance'] = out_df['Raw Chance']*100     # Make cleaner percent column for formatting
-            # Apply highlighting; Pandas makes this way too difficult
-            styled_df = (
-                out_df[['Raw Chance', 'Chance', '1 in...']]
-                .style.apply(highlight_relevant_chances, axis=1)    # Needs 'Raw Chance' column
-                # .hide('Raw Chance', axis=1)   # https://github.com/streamlit/streamlit/issues/7007 Ah Streamlit doesn't support this
-            )
-            st.dataframe(
-                styled_df,
-                column_order=['Chance', '1 in...'],     # Need this because Streamlit doesn't support Pandas .hide()
-                column_config={
-                    'Chance': st.column_config.NumberColumn(
-                        # format='percent'
-                        format='%.1f%%'     # Need to multiply by 100 ahead of time
-                    ),
-                    '1 in...': st.column_config.NumberColumn(
-                        format='%,.2g'  # Sigfig rounding, since we want this to be intuitive
-                    ),
-                }
-            )
+        # NOTE: Make a chat message style print log, can see history if we enable!
+        # with st.container(height=625, border=False, key='chatbox'):   # TODO: Width problems, not working yet...
+        st_display_chatbot_packprob()
