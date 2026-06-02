@@ -173,13 +173,13 @@ def st_display_packprob(output_markdown: str, output_dict: dict) -> None:
     )
 
 
-def st_display_chatbot_packprob():
+def st_display_chatbot_packprob(**chat_message_kwargs):
     """Create chat message style print log, so we can see output history!
     """
     for message in st.session_state.messages:   # NOTE: Assumes messages are set up in session_state
-        with st.chat_message(message['role']):  # E.g. alternating 'user' and 'assistant'
+        with st.chat_message(message['role'], **chat_message_kwargs):
             if message['role'] == 'assistant':
-                # Custom print function for specialized content
+                # Call custom print function for specialized content
                 st_display_packprob(message['content']['output_markdown'],
                                     message['content']['output_dict'])
             else:
