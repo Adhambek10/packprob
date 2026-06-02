@@ -137,14 +137,14 @@ with left_cont:
 
                 # Store content depending on output panel
 
-                # # Method 1: For simple refreshing output panel
-                # st_save_to_chatbot(content, history=False)
-                
-                # Method 2: For scrollable chatbox output panel
-                # Set history=True to enable chat history, beyond just the 1 most recent content.
-                # Problem: Just kind of confusing and unnecessary, but was fun to build.
-                st_save_to_chatbot(f"{total_size}-{n_desired}-{draw_size}", 'user', history=True)     # This is unnecessary I think
-                st_save_to_chatbot(content, 'assistant', history=True)
+                # Method 1: For simple refreshing output panel
+                st_save_to_chatbot(content, history=False)
+
+                # # Method 2: For scrollable chatbox output panel
+                # # Set history=True to enable chat history, beyond just the 1 most recent content.
+                # # Problem: Just kind of confusing and unnecessary, but was fun to build.
+                # st_save_to_chatbot(f"{total_size}-{n_desired}-{draw_size}", 'user', history=True)     # This is unnecessary I think
+                # st_save_to_chatbot(content, 'assistant', history=True)
             except Exception as e:
                 st.exception(e)
         st.toast("Calculation complete.", icon='✅')
@@ -157,14 +157,14 @@ with right_cont:
     else:
         # Print the final results for the human user
         
-        # # Method 1: Simple refreshing output panel
-        # st_display_chatbot_packprob()
+        # Method 1: Simple refreshing output panel
+        st_display_chatbot_packprob()
 
-        # Method 2: Scrollable chatbox output panel
-        # Make a chat message style print log - can see history of calculations!
-        # Problem: Just kind of confusing and unnecessary, but was fun to build.
-        with st.container(height=625, border=False):
-            # NOTE that I've fixed the height to enable scrollbar, but I've also had to decrease the 
-            # width of the chat messages to avoid a horizontal scrollbar that appears because Streamlit 
-            # can't properly calculate the content size when nested containers are involved.
-            st_display_chatbot_packprob(width=293)  # width=303 when no vertical scrollbar...
+        # # Method 2: Scrollable chatbox output panel
+        # # Make a chat message style print log - can see history of calculations!
+        # # Problem: Just kind of confusing and unnecessary, but was fun to build.
+        # with st.container(height=625, border=False):
+        #     # NOTE that I've fixed the height to enable scrollbar, but I've also had to decrease the 
+        #     # width of the chat messages to avoid a horizontal scrollbar that appears because Streamlit 
+        #     # can't properly calculate the content size when nested containers are involved.
+        #     st_display_chatbot_packprob(width=293)  # width=303 when no vertical scrollbar...
